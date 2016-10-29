@@ -1,0 +1,7 @@
+# system requirements: postgres, nginx, memcached, uwsgi, uwsgi-plugin-python
+# For building use versions setuptools and buildout
+cp buildout.cfg.example buildout.cfg
+# edit buildout.cfg
+python bootstrap.py --setuptools-version=3.8.1 -v 2.2.1
+bin/buildout
+bin/supervisord
