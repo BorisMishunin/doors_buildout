@@ -1,0 +1,10 @@
+{
+	"default": {
+		"ENGINE": "django.db.backends.postgresql_psycopg2",
+		"NAME": "{{ parts["project"].files_database_name }}",
+		"USER": "{{ parts["project"].files_database_user }}",
+		"PASSWORD": "{{ parts["project"].files_database_password }}",
+		"HOST": "{{ parts["project"].files_database_host }}",
+		"PORT": {{  parts["project"].files_database_port }}
+	}
+}

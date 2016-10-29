@@ -1,0 +1,33 @@
+{
+	"version": 1,
+	"disable_existing_loggers": false,
+        "formatters" : { 
+		"default" : {
+			"format": "%(asctime)s %(levelname)-5.5s: %(message)s"
+		},
+		"csv" : {
+			"format": "\"%(asctime)s\", %(message)s"
+		}
+        },
+	"handlers": {
+		"console": {
+			"level": "NOTSET",
+			"class": "logging.StreamHandler",
+                        "formatter": "default"},
+		"logfile": {
+			"level": "NOTSET",
+			"class": "logging.handlers.RotatingFileHandler",
+                        "formatter": "default",
+			"filename": "{{ parts["project"].backend_profile_logfile }}"},
+	},
+	"loggers": {
+		"root": {
+			"handlers": ["console"],
+			"level": "{{ parts["project"].backend_log_level }}",
+			"propagate": true },
+		"frontend_profile": {
+			"handlers": ["logfile"],
+			"level": "{{ parts["project"].backend_log_level }}",
+			"propagate": true },
+			}
+}

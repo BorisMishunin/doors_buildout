@@ -1,0 +1,20 @@
+--- webapp/modules/core/scripts/views/data-table/cell-ui.js	2014-04-15 10:47:27.931077289 +0300
++++ webapp/modules/core/scripts/views/data-table/cell-ui.js	2014-04-15 11:42:48.509884645 +0300
+@@ -105,7 +105,7 @@
+       .appendTo(divContent);
+ 
+       if (service && (service.view) && (service.view.url)) {
+-        a.attr("href", encodeURI(service.view.url.replace("{{id}}", match.id)));
++        a.attr("href", encodeURI(service.view.url.replace("{{id}}", match.id).replace("{{type}}", match.types[0])));
+       } else if (ReconciliationManager.isFreebaseIdOrMid(r.identifierSpace)) {
+         a.attr("href", "http://www.freebase.com/view" + match.id);
+       }
+@@ -149,7 +149,7 @@
+             .appendTo(li);
+ 
+             if ((service) && (service.view) && (service.view.url)) {
+-              a.attr("href", encodeURI(service.view.url.replace("{{id}}", candidate.id)));
++              a.attr("href", encodeURI(service.view.url.replace("{{id}}", candidate.id).replace("{{type}}", candidate.types[0])));
+             } else if (ReconciliationManager.isFreebaseIdOrMid(r.identifierSpace)) {
+               a.attr("href", "http://www.freebase.com/view" + candidate.id);
+             }

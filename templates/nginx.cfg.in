@@ -1,0 +1,36 @@
+worker_processes  1;
+daemon off;
+#error_log  {{ parts["buildout"].directory }}/var/log/nginx-error.log;
+error_log  stderr;
+pid        {{ parts["buildout"].directory }}/var/nginx.pid;
+
+events {
+    worker_connections  1024;
+    use epoll;
+}
+
+http {
+    include       /etc/nginx/mime.types;
+    default_type  application/octet-stream;
+    access_log    {{ parts["buildout"].directory }}/var/log/nginx-access.log;
+    client_body_temp_path {{ parts["buildout"].directory }}/var/nginx/body;
+    proxy_temp_path {{ parts["buildout"].directory }}/var/nginx/proxy;
+    uwsgi_temp_path {{ parts["buildout"].directory }}/var/nginx/uwsgi;
+    fastcgi_temp_path {{ parts["buildout"].directory }}/var/nginx/fastcgi;
+    scgi_temp_path {{ parts["buildout"].directory }}/var/nginx/scgi;
+
+    sendfile        on;
+    keepalive_timeout  65;
+    client_max_body_size 5M;
+    tcp_nodelay on;
+    server_tokens off;
+    request_pool_size 1m;
+
+    #uwsgi_read_timeout 300;
+
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    include {{ parts["buildout"].directory }}/etc/nginx/*.cfg;
+}

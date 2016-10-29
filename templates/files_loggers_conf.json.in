@@ -1,0 +1,16 @@
+{
+	"version": 1,
+	"disable_existing_loggers": false,
+	"handlers": {
+		"file": {
+			"level": "{{ parts["project"].files_log_level }}",
+			"class": "logging.FileHandler",
+			"filename": "{{ parts["project"].files_log_file }}"}
+	},
+	"loggers": {
+		"django.request": {
+			"handlers": ["file"],
+			"level": "{{ parts["project"].files_log_level }}",
+			"propagate": true }
+	}
+}

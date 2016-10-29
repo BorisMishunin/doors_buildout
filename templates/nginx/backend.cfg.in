@@ -1,0 +1,55 @@
+    server {
+      listen      {{ parts["project"].backend_host }}:{{ parts["project"].backend_port }};
+      server_name www.{{ parts["project"].backend_hostname }};
+
+      access_log  off;
+
+      merge_slashes off;
+
+      # media files
+      location /media/marketplace/ {
+        proxy_pass  http://{{ parts["project"].files_hostname }}:{{ parts["project"].files_service_port}};
+      }
+
+      location /media/catalog/ {
+        proxy_pass  http://{{ parts["project"].files_hostname }}:{{ parts["project"].files_service_port}};
+      }
+
+
+     location /api/ {
+        rewrite ^/api/(.*)$ /$1 break;
+        uwsgi_pass  unix:{{ parts["buildout"].directory }}/var/{{ parts["project"].backend_host }}-{{ parts["project"].backend_port}}.sock;
+        include  /etc/nginx/uwsgi_params;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Host $http_host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      }
+
+      location = / {
+        root {{ parts["project"].backend_marketplace_static }};
+        index html/index.html;
+      }
+
+      location / {
+        root {{ parts["project"].backend_marketplace_static }};
+        try_files $uri @proxy;
+      }
+
+      location @proxy {
+        uwsgi_pass  unix:{{ parts["buildout"].directory }}/var/{{ parts["project"].backend_host }}-{{ parts["project"].backend_port }}.sock;
+        include  /etc/nginx/uwsgi_params;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP    $remote_addr;
+        proxy_set_header X-Forwarded-Host $http_host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      }
+
+
+      # mp frontend
+      location /upload_data/ {
+        alias {{ parts["project"].backend_marketplace_static }};
+        index html/upload.html;
+      }
+
+    }

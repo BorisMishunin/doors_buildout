@@ -1,0 +1,12 @@
+diff --git a/django/db/backends/postgresql_psycopg2/creation.py b/django/db/backends/postgresql_psycopg2/creation.py
+index 2594ba1..bbb6328 100644
+--- django/db/backends/postgresql_psycopg2/creation.py
++++ django/db/backends/postgresql_psycopg2/creation.py
+@@ -48,4 +48,7 @@
+             elif db_type.startswith('text'):
+                 output.append(get_index_sql('%s_%s_like' % (db_table, f.column),
+                                             ' text_pattern_ops'))
++
++            elif db_type.endswith('[]'):
++                output = [get_index_sql('%s_%s_gin' % (db_table, f.column)).replace(' (', ' ' + style.SQL_KEYWORD('USING GIN') + ' (')]
+         return output
