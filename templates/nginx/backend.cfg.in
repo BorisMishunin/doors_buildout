@@ -8,13 +8,8 @@
 
       # media files
       location /media/marketplace/ {
-        proxy_pass  http://{{ parts["project"].files_hostname }}:{{ parts["project"].files_service_port}};
+        proxy_pass  http://{{ parts["project"].files_service_host }}:{{ parts["project"].files_service_port}};
       }
-
-      location /media/catalog/ {
-        proxy_pass  http://{{ parts["project"].files_hostname }}:{{ parts["project"].files_service_port}};
-      }
-
 
      location /api/ {
         rewrite ^/api/(.*)$ /$1 break;
