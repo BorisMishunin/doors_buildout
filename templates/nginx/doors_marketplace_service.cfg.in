@@ -1,0 +1,15 @@
+    server {
+      listen      {{ parts["project"].marketplace_service_host }}:{{ parts["project"].marketplace_service_port }};
+      server_name {{ parts["project"].marketplace_service_host }};
+      access_log  off;
+
+      location / {
+        uwsgi_pass  unix:{{ parts["buildout"].directory }}/var/{{ parts["project"].marketplace_service_host }}-{{ parts["project"].marketplace_service_port }}.sock;
+        include  /etc/nginx/uwsgi_params;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP    $remote_addr;
+        proxy_set_header X-Forwarded-Host $http_host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      }
+
+    }

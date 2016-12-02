@@ -1,0 +1,10 @@
+{
+	"default": {
+		"ENGINE": "django.db.backends.postgresql_psycopg2",
+		"NAME": "{{ parts["project"].marketplace_database_name }}",
+		"USER": "{{ parts["project"].marketplace_database_user }}",
+		"PASSWORD": "{{ parts["project"].marketplace_database_password }}",
+		"HOST": "{{ parts["project"].marketplace_database_host }}",
+		"PORT": {{ parts["project"].marketplace_database_port }}
+	}
+}
